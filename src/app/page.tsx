@@ -1,103 +1,127 @@
-import Image from "next/image";
+// ./app/page.tsx
+import CardNoticia from "@/components/CardNoticia";
+import BannerPublicitario from "@/components/BannerPublicitario";
+import MostViewedPosts from '@/components/MostViewedPosts';
+import RecentPosts from '@/components/RecentPosts';
 
-export default function Home() {
+// Tipos corretos para a API "plana" com a Categoria como um objeto de relação
+type ImagemNoticia = {
+  url: string;
+};
+type Categoria = {
+  nome: string;
+  slug: string;
+};
+type Noticia = {
+  id: number;
+  titulo: string;
+  resumo: string;
+  imagem_destaque: ImagemNoticia | null;
+  slug: string | null;
+  // A categoria agora é um objeto ou nulo
+  categoria: Categoria | null;
+};
+
+// A função de busca de dados, usando populate=* e retornando os dados "planos"
+async function fetchNoticias(): Promise<Noticia[]> {
+  const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
+  // Usamos populate=* para pegar todas as relações (imagem e categoria)
+  const endpoint = `${apiUrl}/api/noticias?populate=*`;
+
+  try {
+    const res = await fetch(endpoint, { cache: 'no-store' });
+    if (!res.ok) {
+      console.error("API Response Error. Verifique as permissões no Strapi, especialmente para o UPLOAD.", res.status, res.statusText);
+      throw new Error('Falha ao buscar notícias da API');
+    }
+    
+    const responseJson = await res.json();
+    
+    // A sua API já retorna os dados "planos", então apenas retornamos o array 'data'
+    return responseJson.data || [];
+
+  } catch (error) {
+    console.error("Erro em fetchNoticias:", error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const noticias = await fetchNoticias();
+
+  if (!noticias || noticias.length === 0) {
+    return (
+      <div className="container mx-auto p-8 text-center">
+        <h2 className="text-2xl font-bold">Nenhuma notícia encontrada.</h2>
+        <p className="mt-2 text-gray-600">Verifique se há notícias publicadas no seu painel Strapi.</p>
+      </div>
+    );
+  }
+
+  const noticiaDestaque = noticias[0];
+  const outrasNoticias = noticias.slice(1);
+  const placeholderImage = 'https://placehold.co/600x400/e2e8f0/64748b?text=Sem+Imagem';
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="container mx-auto p-4 md:p-8">
+      <BannerPublicitario local="topo-home" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      {/* Container principal com Flexbox */}
+      <div className="flex flex-col lg:flex-row gap-8 mt-8">
+        
+        {/* Coluna Principal (Conteúdo da Homepage) */}
+        <main className="w-full lg:w-2/3">
+          <section className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-blue-700 pl-4 mb-6">
+              Destaque Principal
+            </h2>
+            {/* CORREÇÃO AQUI: Preenchendo todas as props */}
+            <CardNoticia
+              titulo={noticiaDestaque.titulo}
+              categoria={noticiaDestaque.categoria}
+              resumo={noticiaDestaque.resumo}
+              imagemUrl={
+                noticiaDestaque.imagem_destaque
+                  ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${noticiaDestaque.imagem_destaque.url}`
+                  : placeholderImage
+              }
+              slug={noticiaDestaque.slug ?? '#'}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          </section>
+
+          <section>
+            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-blue-700 pl-4 mb-6">
+              Últimas Notícias
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {outrasNoticias.map((noticia) => (
+                // CORREÇÃO AQUI: Preenchendo todas as props
+                <CardNoticia
+                  key={noticia.id}
+                  titulo={noticia.titulo}
+                  categoria={noticia.categoria}
+                  resumo={noticia.resumo}
+                  imagemUrl={
+                    noticia.imagem_destaque
+                      ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${noticia.imagem_destaque.url}`
+                      : placeholderImage
+                  }
+                  slug={noticia.slug ?? '#'}
+                />
+              ))}
+            </div>
+          </section>
+        </main>
+
+        {/* Barra Lateral (Sidebar) da Homepage */}
+        <aside className="w-full lg:w-1/3">
+          <div className="sticky top-24 space-y-8">
+            <MostViewedPosts />
+            <RecentPosts currentPostSlug={noticiaDestaque.slug ?? ''} />
+          </div>
+        </aside>
+
+      </div>
     </div>
   );
 }
