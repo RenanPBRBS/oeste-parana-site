@@ -25,14 +25,12 @@ async function fetchCategorias(): Promise<Categoria[]> {
 
 export default async function Header() {
   const categorias = await fetchCategorias();
-
   return (
-    <header className="bg-surface shadow-md p-4 sticky top-0 z-30 border-b border-border">
+    <header className="bg-white/70 backdrop-blur-lg p-4 sticky top-0 z-30 border-b border-neutral-100">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-2xl font-sans font-bold text-primary hover:opacity-80 transition-opacity">
+        <Link href="/" className="text-2xl font-sans font-bold text-brand-blue hover:opacity-80 transition-opacity">
           Oeste Paraná
         </Link>
-        
         <HeaderNavigation categorias={categorias} />
       </div>
     </header>

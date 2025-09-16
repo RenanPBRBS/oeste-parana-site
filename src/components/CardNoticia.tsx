@@ -17,30 +17,30 @@ type CardNoticiaProps = {
 
 export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug }: CardNoticiaProps) {
   return (
-    <div className="flex flex-col bg-surface border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 h-full">
+    <div className="flex flex-col bg-white border border-neutral-100 rounded-lg overflow-hidden transition-shadow duration-300 h-full hover:shadow-2xl">
       <Link href={`/noticia/${slug}`} className="block group">
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <Image
             src={imagemUrl}
             alt={titulo}
             width={500}
             height={300}
-            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
           />
         </div>
       </Link>
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-6 flex flex-col flex-grow">
         {categoria && (
-          <Link href={`/categoria/${categoria.slug}`} className="font-sans text-sm font-semibold text-primary bg-primary/10 px-2 py-1 rounded-full self-start hover:bg-primary/20 transition-colors">
+          <Link href={`/categoria/${categoria.slug}`} className="font-sans text-xs font-bold uppercase text-brand-blue hover:underline mb-2 self-start">
             {categoria.nome}
           </Link>
         )}
-        <h3 className="font-sans text-xl font-bold mt-2 mb-2 text-text-primary flex-grow">
-          <Link href={`/noticia/${slug}`} className="hover:text-primary transition-colors">
+        <h3 className="font-sans text-xl font-bold text-neutral-900 flex-grow">
+          <Link href={`/noticia/${slug}`} className="hover:text-brand-blue transition-colors duration-300">
             {titulo}
           </Link>
         </h3>
-        <p className="text-text-secondary text-sm">
+        <p className="text-neutral-800 text-sm mt-3">
           {resumo}
         </p>
       </div>

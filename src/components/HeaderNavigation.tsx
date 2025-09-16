@@ -17,15 +17,13 @@ type HeaderNavigationProps = {
 
 export default function HeaderNavigation({ categorias }: HeaderNavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <>
-      {/* NAVEGAÇÃO PARA DESKTOP */}
       <nav className="hidden md:flex space-x-6 items-center font-sans">
         <ul className="flex space-x-6">
           {categorias.map((categoria) => (
             <li key={categoria.id}>
-              <Link href={`/categoria/${categoria.slug}`} className="text-text-secondary hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary">
+              <Link href={`/categoria/${categoria.slug}`} className="text-neutral-800 hover:text-brand-blue transition-colors text-sm font-medium">
                 {categoria.nome}
               </Link>
             </li>

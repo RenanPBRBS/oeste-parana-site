@@ -11,21 +11,48 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // Adicionamos nossas fontes customizadas aqui
       fontFamily: {
-        sans: ['var(--font-lato)', ...fontFamily.sans],
-        serif: ['var(--font-merriweather)', ...fontFamily.serif],
+        // 'sans' será a fonte para títulos e UI (Inter)
+        sans: ['var(--font-inter)', ...fontFamily.sans],
+        // 'serif' será a fonte para o corpo do texto (Lora)
+        serif: ['var(--font-lora)', ...fontFamily.serif],
       },
-      // Adicionamos nossa paleta de cores customizada aqui
       colors: {
-        'primary': '#0057b8', // Um azul forte para links e destaques
-        'primary-hover': '#00418a',
-        'background': '#f8f9fa', // Um branco levemente acinzentado para o fundo
-        'surface': '#ffffff', // Branco puro para o fundo dos cards
-        'text-primary': '#212529', // Um cinza bem escuro para o texto principal
-        'text-secondary': '#495057', // Um cinza mais claro para textos secundários
-        'border': '#dee2e6', // Cor para bordas sutis
+        'brand': {
+          'blue': '#0d2544', // Nosso azul sóbrio e profundo
+          'blue-light': '#1a4a8a',
+        },
+        'neutral': {
+          '50': '#f8f9fa',  // Fundo principal (Off-white)
+          '100': '#e9ecef', // Bordas e divisórias
+          '400': '#adb5bd', // Texto de apoio
+          '800': '#343a40', // Texto principal (Quase-preto)
+          '900': '#212529', // Títulos
+        },
       },
+      // Vamos customizar a aparência dos artigos (plugin de tipografia)
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.neutral[800]'),
+            '--tw-prose-headings': theme('colors.neutral[900]'),
+            '--tw-prose-lead': theme('colors.neutral[700]'),
+            '--tw-prose-links': theme('colors.brand.blue'),
+            '--tw-prose-bold': theme('colors.neutral[900]'),
+            '--tw-prose-counters': theme('colors.neutral[600]'),
+            '--tw-prose-bullets': theme('colors.neutral[400]'),
+            '--tw-prose-hr': theme('colors.neutral[300]'),
+            '--tw-prose-quotes': theme('colors.neutral[900]'),
+            '--tw-prose-quote-borders': theme('colors.neutral[300]'),
+            '--tw-prose-captions': theme('colors.neutral[700]'),
+            '--tw-prose-code': theme('colors.neutral[900]'),
+            '--tw-prose-pre-code': theme('colors.neutral[100]'),
+            '--tw-prose-pre-bg': theme('colors.neutral[900]'),
+            '--tw-prose-th-borders': theme('colors.neutral[300]'),
+            '--tw-prose-td-borders': theme('colors.neutral[200]'),
+          },
+        },
+      }),
     },
   },
   plugins: [
