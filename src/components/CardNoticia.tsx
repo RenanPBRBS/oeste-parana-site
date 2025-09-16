@@ -2,8 +2,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Categoria = { nome: string; slug: string; }
-type CardNoticiaProps = { imagemUrl: string; categoria: Categoria | null; titulo: string; resumo: string; slug: string; };
+type Categoria = {
+  nome: string;
+  slug: string;
+}
+
+type CardNoticiaProps = {
+  imagemUrl: string;
+  categoria: Categoria | null;
+  titulo: string;
+  resumo: string;
+  slug: string;
+};
 
 export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug }: CardNoticiaProps) {
   return (
@@ -11,14 +21,16 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
       <Link href={`/noticia/${slug}`}>
         <div className="relative aspect-video overflow-hidden">
           <Image
-            src={imagemUrl} alt={titulo} fill sizes="(max-width: 768px) 100vw, 50vw"
+            src={imagemUrl}
+            alt={titulo}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
           />
         </div>
       </Link>
       <div className="p-5 flex flex-col flex-grow">
         {categoria && (
-          // 3. TAG DE CATEGORIA COM DESTAQUE VISUAL
           <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-semibold bg-neutral-100 text-primary px-2.5 py-1 rounded-md self-start hover:bg-neutral-200 transition-colors mb-3">
             {categoria.nome}
           </Link>
@@ -28,6 +40,10 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
             {titulo}
           </Link>
         </h3>
+        {/* PARÁGRAFO DO RESUMO ADICIONADO AQUI */}
+        <p className="font-body text-neutral-500 text-sm mt-2 leading-relaxed">
+          {resumo}
+        </p>
       </div>
     </div>
   );
