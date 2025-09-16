@@ -2,12 +2,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Tipos "planos"
 type ImagemNoticia = { url: string; };
 type Categoria = { nome: string; slug: string; };
 type NoticiaMaisVista = { id: number; titulo: string; slug: string | null; visualizacoes: number; categoria: Categoria | null; imagem_destaque: ImagemNoticia | null; }
 
-// Função de busca SIMPLIFICADA
 async function fetchMostViewed(): Promise<NoticiaMaisVista[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/noticias?sort=visualizacoes:desc&pagination[limit]=5&populate=*`;
@@ -42,10 +40,12 @@ export default async function MostViewedPosts() {
             </Link>
             <div>
               {noticia.categoria && (
-                 // ESTILO ATUALIZADO AQUI
-                 <Link href={`/categoria/${noticia.categoria.slug}`} className="font-heading text-[10px] font-bold uppercase bg-primary-extra-light text-primary-dark px-2 py-1 rounded-md self-start hover:bg-primary/20 transition-colors duration-300 inline-flex items-center gap-1">
-                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v7A1.5 1.5 0 0 0 2.5 13h7A1.5 1.5 0 0 0 11 11.5v-7A1.5 1.5 0 0 0 9.5 3h-7Zm11.854 3.854a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L12.293 8l-2.647 2.646a.5.5 0 1 0 .708.708l3-3Z" /></svg>
-                   <span>{noticia.categoria.nome}</span>
+                // ESTILO ATUALIZADO AQUI (Pílula cinza claro com texto primário)
+                <Link 
+                  href={`/categoria/${noticia.categoria.slug}`} 
+                  className="font-heading text-[10px] font-bold uppercase bg-neutral-100 text-primary-dark px-2 py-1 rounded-md self-start hover:bg-neutral-200 hover:text-primary transition-colors duration-300 inline-block"
+                >
+                  {noticia.categoria.nome}
                 </Link>
               )}
               <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors mt-2">
