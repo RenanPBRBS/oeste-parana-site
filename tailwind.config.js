@@ -17,8 +17,9 @@ module.exports = {
       },
       colors: {
         'g1': {
-          'red': '#C4170C', // O vermelho icônico do G1
-          'blue': '#00589F', // Azul para links de texto
+          'red': '#C4170C',   // O vermelho icônico do G1
+          'blue': '#00589F',  // Azul para links de texto
+          'bar': '#333333',   // Barra superior da Globo.com
         },
         'neutral': {
           '50': '#FFFFFF',   // Branco
@@ -29,6 +30,18 @@ module.exports = {
           '900': '#000000',  // Títulos fortes
         },
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.neutral.800'),
+            a: { color: theme('colors.g1.blue'), '&:hover': { textDecoration: 'underline' } },
+            h1: { color: theme('colors.neutral.900') },
+            h2: { color: theme('colors.neutral.900') },
+            h3: { color: theme('colors.neutral.900') },
+            strong: { color: theme('colors.neutral.900') },
+          },
+        },
+      }),
     },
   },
   plugins: [
