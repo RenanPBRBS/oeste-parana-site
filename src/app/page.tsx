@@ -73,7 +73,7 @@ export default async function Home() {
         {/* Coluna Principal (Conteúdo da Homepage) */}
         <main className="w-full lg:w-2/3">
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-blue-700 pl-4 mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-primary pl-4 mb-6">
               Destaque Principal
             </h2>
             {/* CORREÇÃO AQUI: Preenchendo todas as props */}
@@ -91,7 +91,7 @@ export default async function Home() {
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-blue-700 pl-4 mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-primary pl-4 mb-6">
               Últimas Notícias
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

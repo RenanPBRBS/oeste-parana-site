@@ -1,39 +1,33 @@
 // ./app/layout.tsx
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+// Importa as fontes do Google Fonts
+import { Lato, Merriweather } from 'next/font/google';
+import './globals.css';
 
-// Nossas importações
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
-const inter = Inter({ subsets: ["latin"] });
+// Configuração das fontes
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['400', '700', '900'],
+  variable: '--font-lato', // Define uma variável CSS para a fonte
+});
+
+const merriweather = Merriweather({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-merriweather', // Define uma variável CSS para a fonte
+});
 
 export const metadata: Metadata = {
-  // Define um padrão para os títulos. %s será substituído pelo título da página específica.
+  // ... (seu metadata continua o mesmo)
   title: {
     template: '%s | Oeste Paraná Notícias',
-    default: 'Oeste Paraná Notícias - As últimas notícias da sua região', // Título padrão (para a homepage)
+    default: 'Oeste Paraná Notícias - As últimas notícias da sua região',
   },
   description: 'Fique por dentro das últimas notícias e acontecimentos do Oeste do Paraná. Cobertura completa sobre agronegócio, política, esportes e cidades.',
-  
-  // Metadados para redes sociais (Open Graph)
-  openGraph: {
-    title: 'Oeste Paraná Notícias',
-    description: 'As últimas notícias e acontecimentos do Oeste do Paraná.',
-    url: 'https://www.oesteparana.com.br', // IMPORTANTE: Trocar pela URL real do seu site quando tiver uma
-    siteName: 'Oeste Paraná Notícias',
-    images: [
-      {
-        // IMPORTANTE: Criar e colocar uma imagem padrão para compartilhamento
-        url: 'https://www.oesteparana.com.br/og-image.png', 
-        width: 1200,
-        height: 630,
-      },
-    ],
-    locale: 'pt_BR',
-    type: 'website',
-  },
+  // ... (resto do seu metadata)
 };
 
 export default function RootLayout({
@@ -42,13 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      {/* Adicionamos classes aqui para garantir que o footer fique no final da página,
-        mesmo em páginas com pouco conteúdo.
-      */}
-      <body className={`${inter.className} min-h-screen flex flex-col`}>
+    // Aplicamos as variáveis das fontes e as novas cores base
+    <html lang="pt-BR" className={`${lato.variable} ${merriweather.variable}`}>
+      <body className="min-h-screen flex flex-col bg-background font-serif text-text-primary">
         <Header />
-        {/* A tag <main> representa o conteúdo principal da página */}
         <main className="flex-grow">
           {children}
         </main>
