@@ -12,10 +12,7 @@ async function fetchCategorias(): Promise<Categoria[]> {
     const res = await fetch(endpoint, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     const responseJson = await res.json();
-    
-    // CORREÇÃO AQUI: Apenas retornamos os dados "planos", sem tentar acessar "attributes"
     return responseJson.data || [];
-
   } catch (error) {
     console.error("Erro ao buscar categorias:", error);
     return [];
@@ -26,34 +23,39 @@ export default async function Header() {
   const categorias = await fetchCategorias();
 
   return (
+    // O header agora é uma única barra
     <header className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-30 border-b border-neutral-100 font-heading">
-      {/* Barra Principal */}
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
+          {/* Logo à esquerda */}
           <Link href="/" className="text-3xl font-extrabold text-neutral-900 hover:text-primary transition-colors">
             Oeste Paraná
           </Link>
-          <div className="hidden md:block">
+          
+          {/* Container para navegação e busca (aparece apenas no desktop) */}
+          <div className="hidden md:flex items-center gap-8">
+            <nav>
+              <ul className="flex items-center gap-8">
+                {categorias.map((categoria) => (
+                  <li key={categoria.id}>
+                    {/* Links com alto contraste e animação de sublinhado */}
+                    <Link 
+                      href={`/categoria/${categoria.slug}`} 
+                      className="text-neutral-700 font-semibold relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:text-primary hover:after:scale-x-100 pb-1"
+                    >
+                      {categoria.nome}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
             <SearchBar />
           </div>
+          
+          {/* O menu mobile continua sendo controlado pelo HeaderNavigation */}
           <HeaderNavigation categorias={categorias} />
         </div>
       </div>
-      
-      {/* Barra de Categorias (Desktop) */}
-      <nav className="hidden md:block bg-primary">
-        <div className="container mx-auto px-4">
-          <ul className="flex items-center space-x-8">
-            {categorias.map((categoria) => (
-              <li key={categoria.id}>
-                <Link href={`/categoria/${categoria.slug}`} className="text-white text-sm font-semibold uppercase py-3 block relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  {categoria.nome}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
     </header>
   );
 }
