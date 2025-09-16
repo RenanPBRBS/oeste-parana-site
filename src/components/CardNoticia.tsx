@@ -32,8 +32,8 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
       <div className="p-5 flex flex-col flex-grow font-body">
         {categoria && (
           // AQUI ESTÁ A MUDANÇA DE ESTILO PRINCIPAL
-          <Link 
-            href={`/categoria/${categoria.slug}`} 
+          <Link
+            href={`/categoria/${categoria.slug}`}
             className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3"
           >
             {categoria.nome}

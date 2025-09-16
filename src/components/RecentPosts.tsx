@@ -71,7 +71,11 @@ export default async function RecentPosts({ currentPostSlug }: { currentPostSlug
             </Link>
             <div>
               {noticia.categoria && (
-                 <Link href={`/categoria/${noticia.categoria.slug}`} className="font-heading text-[10px] font-bold uppercase bg-primary text-white px-2.5 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300">
+                 <Link 
+                  href={`/categoria/${noticia.categoria.slug}`} 
+                  // ESTILO ATUALIZADO AQUI
+                  className="font-heading text-[10px] font-bold uppercase bg-primary-light text-white px-2.5 py-1 rounded-full self-start hover:bg-primary transition-colors duration-300"
+                >
                   {noticia.categoria.nome}
                 </Link>
               )}
