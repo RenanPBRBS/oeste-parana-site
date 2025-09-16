@@ -34,15 +34,15 @@ export default async function MostViewedPosts() {
   const placeholderImage = 'https://placehold.co/150x150/e2e8f0/64748b?text=Img';
 
   return (
-    <div className="bg-surface p-6 rounded-lg shadow-sm border border-border">
-      <h3 className="font-sans text-xl font-bold mb-4 border-b-2 border-border pb-2 text-text-primary">
+    <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-100 font-body">
+      <h3 className="font-heading text-xl font-bold mb-4 pb-2 border-b-2 border-neutral-200 text-neutral-900">
         🔥 Mais Vistos
       </h3>
-      <ul className="space-y-4">
+      <ul className="space-y-5">
         {noticias.map((noticia) => (
-          <li key={noticia.id} className="flex items-start gap-4">
+          <li key={noticia.id} className="flex items-start gap-4 group">
             <Link href={`/noticia/${noticia.slug ?? '#'}`} className="flex-shrink-0">
-              <div className="relative w-20 h-16 rounded-md overflow-hidden">
+              <div className="relative w-24 h-16 rounded-md overflow-hidden">
                 <Image
                   src={
                     noticia.imagem_destaque
@@ -52,17 +52,18 @@ export default async function MostViewedPosts() {
                   alt={noticia.titulo}
                   fill
                   style={{ objectFit: 'cover' }}
-                  sizes="80px"
+                  sizes="96px"
+                  className="group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
             </Link>
-            <div className='font-sans'>
+            <div>
               {noticia.categoria && (
-                 <span className="text-xs font-semibold text-primary">
+                 <span className="text-xs font-heading font-semibold uppercase text-primary">
                   {noticia.categoria.nome}
                 </span>
               )}
-              <h4 className="font-semibold leading-tight text-text-primary hover:text-primary transition-colors">
+              <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors">
                 <Link href={`/noticia/${noticia.slug ?? '#'}`}>
                   {noticia.titulo}
                 </Link>

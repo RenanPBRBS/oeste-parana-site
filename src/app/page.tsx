@@ -1,100 +1,85 @@
 // ./app/page.tsx
+import React from 'react'; // Importar React para usar <React.Fragment>
 import CardNoticia from "@/components/CardNoticia";
+import HeroPost from "@/components/HeroPost"; // Novo componente para o post principal
+import MostViewedPosts from "@/components/MostViewedPosts";
 import BannerPublicitario from "@/components/BannerPublicitario";
-import MostViewedPosts from '@/components/MostViewedPosts';
-import RecentPosts from '@/components/RecentPosts';
-import React from 'react';
+import type { Metadata } from 'next';
 
-// Tipos corretos para a API "plana" com a Categoria como um objeto de relação
-type ImagemNoticia = {
-  url: string;
-};
-type Categoria = {
-  nome: string;
-  slug: string;
-};
+type ImagemNoticia = { url: string; };
+type Categoria = { nome: string; slug: string; };
 type Noticia = {
   id: number;
   titulo: string;
   resumo: string;
   imagem_destaque: ImagemNoticia | null;
   slug: string | null;
-  // A categoria agora é um objeto ou nulo
   categoria: Categoria | null;
+  publishedAt: string; // Para ordenação
 };
 
-// A função de busca de dados, usando populate=* e retornando os dados "planos"
 async function fetchNoticias(): Promise<Noticia[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-  // Usamos populate=* para pegar todas as relações (imagem e categoria)
-  const endpoint = `${apiUrl}/api/noticias?populate=*`;
+  // Ordena por data de publicação e popula tudo
+  const endpoint = `${apiUrl}/api/noticias?sort=publishedAt:desc&populate=*`;
 
   try {
-    const res = await fetch(endpoint, { cache: 'no-store' });
-    if (!res.ok) {
-      console.error("API Response Error. Verifique as permissões no Strapi, especialmente para o UPLOAD.", res.status, res.statusText);
-      throw new Error('Falha ao buscar notícias da API');
-
-    }
-    
+    const res = await fetch(endpoint, { next: { revalidate: 600 } });
+    if (!res.ok) return [];
     const responseJson = await res.json();
-    
-    // A sua API já retorna os dados "planos", então apenas retornamos o array 'data'
     return responseJson.data || [];
   } catch (error) {
-    console.error("Erro em fetchNoticias:", error);
+    console.error("Erro ao buscar notícias:", error);
     return [];
   }
 }
 
-export default async function Home() {
+// Seu metadata permanece o mesmo
+export const metadata: Metadata = {
+  title: 'Homepage',
+  // ... (resto do seu metadata)
+};
+
+export default async function Homepage() {
   const noticias = await fetchNoticias();
 
   if (!noticias || noticias.length === 0) {
     return (
-      <div className="container mx-auto p-8 text-center">
-        <h2 className="text-2xl font-bold">Nenhuma notícia encontrada.</h2>
-        <p className="mt-2 text-gray-600">Verifique se há notícias publicadas no seu painel Strapi.</p>
+      <div className="container mx-auto p-8 text-center text-neutral-700 font-body">
+        <p>Nenhuma notícia encontrada no momento. Por favor, cadastre algumas no Strapi.</p>
       </div>
     );
   }
 
-  const noticiaDestaque = noticias[0];
-  const outrasNoticias = noticias.slice(1);
+  const principalNoticia = noticias[0];
+  const outrasNoticias = noticias.slice(1); // Todas as outras notícias
+
   const placeholderImage = 'https://placehold.co/600x400/e2e8f0/64748b?text=Sem+Imagem';
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <BannerPublicitario local="topo-home" />
+    <div className="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 font-body">
+      {/* Coluna principal com a notícia em destaque */}
+      <div className="md:col-span-2 space-y-8">
+        {principalNoticia && (
+          <HeroPost
+            titulo={principalNoticia.titulo}
+            categoria={principalNoticia.categoria}
+            resumo={principalNoticia.resumo}
+            imagemUrl={
+              principalNoticia.imagem_destaque
+                ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${principalNoticia.imagem_destaque.url}`
+                : placeholderImage
+            }
+            slug={principalNoticia.slug ?? '#'}
+          />
+        )}
 
-      {/* Container principal com Flexbox */}
-      <div className="flex flex-col lg:flex-row gap-8 mt-8">
-        
-        {/* Coluna Principal (Conteúdo da Homepage) */}
-        <main className="w-full lg:w-2/3">
-          <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-primary pl-4 mb-6">
-              Destaque Principal
-            </h2>
-            {/* CORREÇÃO AQUI: Preenchendo todas as props */}
-            <CardNoticia
-              titulo={noticiaDestaque.titulo}
-              categoria={noticiaDestaque.categoria}
-              resumo={noticiaDestaque.resumo}
-              imagemUrl={
-                noticiaDestaque.imagem_destaque
-                  ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${noticiaDestaque.imagem_destaque.url}`
-                  : placeholderImage
-              }
-              slug={noticiaDestaque.slug ?? '#'}
-            />
-          </section>
-
-          <section>
-            <h2 className="text-3xl font-bold text-gray-800 border-l-4 border-primary pl-4 mb-6">
-              Últimas Notícias
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Seção "Mais Notícias" */}
+        <section>
+          <h2 className="font-heading text-3xl font-bold text-neutral-900 mb-6 pb-2 border-b-2 border-primary">
+            Últimas Notícias
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {outrasNoticias.map((noticia, index) => (
               <React.Fragment key={noticia.id}>
                 <CardNoticia
@@ -108,27 +93,24 @@ export default async function Home() {
                   }
                   slug={noticia.slug ?? '#'}
                 />
-                {/* Se este for o segundo item da lista (index 1), adiciona um anúncio depois dele */}
-                {index === 1 && (
-                  <div className="md:col-span-2"> {/* Ocupa a largura de 2 colunas no desktop */}
+                {/* Anúncio no meio da lista, após o terceiro card */}
+                {index === 2 && ( // Após o 3º item (índice 2)
+                  <div className="md:col-span-2 lg:col-span-3 mt-8"> {/* Ocupa toda a largura */}
                     <BannerPublicitario local="home-meio-lista" />
                   </div>
                 )}
               </React.Fragment>
             ))}
-            </div>
-          </section>
-        </main>
-
-        {/* Barra Lateral (Sidebar) da Homepage */}
-        <aside className="w-full lg:w-1/3">
-          <div className="sticky top-24 space-y-8">
-            <MostViewedPosts />
-            <RecentPosts currentPostSlug={noticiaDestaque.slug ?? ''} />
           </div>
-        </aside>
-
+        </section>
       </div>
+
+      {/* Sidebar - Coluna lateral */}
+      <aside className="md:col-span-1 space-y-8">
+        <BannerPublicitario local="lateral-artigo" />
+        <MostViewedPosts />
+        {/* Podemos adicionar mais banners ou componentes aqui */}
+      </aside>
     </div>
   );
 }

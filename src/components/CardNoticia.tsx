@@ -17,30 +17,30 @@ type CardNoticiaProps = {
 
 export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug }: CardNoticiaProps) {
   return (
-    <div className="flex flex-col bg-white border border-neutral-100 rounded-lg overflow-hidden transition-shadow duration-300 h-full hover:shadow-2xl">
+    <div className="flex flex-col bg-white border border-neutral-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 h-full">
       <Link href={`/noticia/${slug}`} className="block group">
-        <div className="relative overflow-hidden">
+        <div className="relative aspect-video overflow-hidden"> {/* Usamos aspect-video para proporção consistente */}
           <Image
             src={imagemUrl}
             alt={titulo}
-            width={500}
-            height={300}
-            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
           />
         </div>
       </Link>
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-5 flex flex-col flex-grow font-body">
         {categoria && (
-          <Link href={`/categoria/${categoria.slug}`} className="font-sans text-xs font-bold uppercase text-brand-blue hover:underline mb-2 self-start">
+          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-semibold uppercase text-primary hover:text-primary-dark transition-colors mb-2 self-start">
             {categoria.nome}
           </Link>
         )}
-        <h3 className="font-sans text-xl font-bold text-neutral-900 flex-grow">
-          <Link href={`/noticia/${slug}`} className="hover:text-brand-blue transition-colors duration-300">
+        <h3 className="font-heading text-xl font-semibold leading-tight text-neutral-900 flex-grow">
+          <Link href={`/noticia/${slug}`} className="hover:text-primary transition-colors duration-300">
             {titulo}
           </Link>
         </h3>
-        <p className="text-neutral-800 text-sm mt-3">
+        <p className="text-neutral-700 text-sm mt-3 leading-relaxed">
           {resumo}
         </p>
       </div>

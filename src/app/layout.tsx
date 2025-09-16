@@ -1,25 +1,27 @@
 // ./app/layout.tsx
 import type { Metadata } from 'next';
-import { Inter, Lora } from 'next/font/google';
+import { Montserrat, Open_Sans } from 'next/font/google'; // Novas fontes
 import './globals.css';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 // Configuração das novas fontes
-const inter = Inter({
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-montserrat',
+  weight: ['400', '500', '600', '700', '800'], // Pesos que usaremos
 });
 
-const lora = Lora({
+const openSans = Open_Sans({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-lora',
+  variable: '--font-open-sans',
+  weight: ['400', '600'], // Pesos que usaremos
 });
 
-// Seu metadata continua o mesmo
+// Seu metadata continua o mesmo, com pequenas atualizações para OpenGraph
 export const metadata: Metadata = {
     title: {
       template: '%s | Oeste Paraná Notícias',
@@ -43,13 +45,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${lora.variable}`}>
-      <body className="min-h-screen flex flex-col bg-neutral-50 font-serif text-neutral-800 antialiased">
+    <html lang="pt-BR" className={`${montserrat.variable} ${openSans.variable}`}>
+      {/* Aplicamos as fontes globais e as novas cores de fundo e texto */}
+      <body className="min-h-screen flex flex-col bg-neutral-50 font-body text-neutral-700 antialiased">
         <Header />
         <main className="flex-grow">
           {children}
         </main>
-        {/* Adicionando um Footer mais estilizado */}
         <Footer />
       </body>
     </html>
