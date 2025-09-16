@@ -1,27 +1,25 @@
 // ./app/layout.tsx
 import type { Metadata } from 'next';
-import { Montserrat, Open_Sans } from 'next/font/google'; // Novas fontes
+import { Montserrat, Open_Sans } from 'next/font/google';
 import './globals.css';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-// Configuração das novas fontes
 const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-montserrat',
-  weight: ['400', '500', '600', '700', '800'], // Pesos que usaremos
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const openSans = Open_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-open-sans',
-  weight: ['400', '600'], // Pesos que usaremos
+  weight: ['400', '600'],
 });
 
-// Seu metadata continua o mesmo, com pequenas atualizações para OpenGraph
 export const metadata: Metadata = {
     title: {
       template: '%s | Oeste Paraná Notícias',
@@ -46,7 +44,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${montserrat.variable} ${openSans.variable}`}>
-      {/* Aplicamos as fontes globais e as novas cores de fundo e texto */}
       <body className="min-h-screen flex flex-col bg-neutral-50 font-body text-neutral-700 antialiased">
         <Header />
         <main className="flex-grow">

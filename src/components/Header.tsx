@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ./components/Header.tsx
 import Link from 'next/link';
 import HeaderNavigation from './HeaderNavigation';
 import SearchBar from './SearchBar';
+
 type Categoria = { id: number; nome: string; slug: string; };
 
 async function fetchCategorias(): Promise<Categoria[]> {
-  // Garantindo que estamos usando a variável de ambiente correta
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/categorias`;
   try {
     const res = await fetch(endpoint, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     const responseJson = await res.json();
-    return responseJson.data || [];
+    return responseJson.data.map((item: any) => ({ ...item.attributes, id: item.id }));
   } catch (error) {
     console.error("Erro ao buscar categorias:", error);
     return [];
@@ -21,10 +22,11 @@ async function fetchCategorias(): Promise<Categoria[]> {
 
 export default async function Header() {
   const categorias = await fetchCategorias();
+
   return (
     <header className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-30 border-b border-neutral-100 font-heading">
+      {/* Barra Principal */}
       <div className="container mx-auto px-4">
-        {/* Barra Principal */}
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="text-3xl font-extrabold text-neutral-900 hover:text-primary transition-colors">
             Oeste Paraná
@@ -32,11 +34,12 @@ export default async function Header() {
           <div className="hidden md:block">
             <SearchBar />
           </div>
+          {/* O componente a seguir controla o menu mobile e o botão */}
           <HeaderNavigation categorias={categorias} />
         </div>
       </div>
       
-      {/* Barra de Categorias (Desktop) */}
+      {/* Barra de Categorias (Aparece apenas no Desktop) */}
       <nav className="hidden md:block bg-primary">
         <div className="container mx-auto px-4">
           <ul className="flex items-center space-x-8">

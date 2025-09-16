@@ -5,20 +5,35 @@ import MostViewedPosts from "@/components/MostViewedPosts";
 import RecentPosts from "@/components/RecentPosts";
 import HeroPost from "@/components/HeroPost";
 
-// Tipos de dados
 // --- DEFINIÇÕES DE TIPO CORRIGIDAS ---
+// Estes são os tipos "planos" que usamos nos nossos componentes
 type ImagemNoticia = { url: string; };
 type Categoria = { nome: string; slug: string; };
-type Noticia = { id: number; titulo: string; resumo: string; imagem_destaque: ImagemNoticia | null; slug: string | null; categoria: Categoria | null; };
+type Noticia = { 
+  id: number; 
+  titulo: string; 
+  resumo: string; 
+  imagem_destaque: ImagemNoticia | null; 
+  slug: string | null; 
+  categoria: Categoria | null; 
+  publishedAt: string;
+};
 
-// Tipos que representam a estrutura ANINHADA que vem da API
+// Estes tipos representam a estrutura ANINHADA real que vem da API
 type StrapiCategoria = { data: { attributes: Categoria } | null };
 type StrapiImagem = { data: { attributes: ImagemNoticia } | null };
-type StrapiItemAttributes = { titulo: string; resumo: string; slug: string | null; categoria: StrapiCategoria; imagem_destaque: StrapiImagem; publishedAt: string; };
+type StrapiItemAttributes = { 
+  titulo: string; 
+  resumo: string; 
+  slug: string | null; 
+  categoria: StrapiCategoria; 
+  imagem_destaque: StrapiImagem; 
+  publishedAt: string;
+};
 type StrapiItem = { id: number; attributes: StrapiItemAttributes };
 // --- FIM DAS DEFINIÇÕES DE TIPO ---
 
-// Função de busca
+
 async function fetchNoticias(): Promise<Noticia[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/noticias?sort=publishedAt:desc&populate=*`;
@@ -26,9 +41,14 @@ async function fetchNoticias(): Promise<Noticia[]> {
     const res = await fetch(endpoint, { next: { revalidate: 600 } });
     if (!res.ok) return [];
     const responseJson = await res.json();
+    
+    // Esta lógica de transformação agora está correta porque os tipos acima são precisos
     return responseJson.data.map((item: StrapiItem) => ({
       id: item.id,
-      ...item.attributes,
+      titulo: item.attributes.titulo,
+      resumo: item.attributes.resumo,
+      slug: item.attributes.slug,
+      publishedAt: item.attributes.publishedAt,
       categoria: item.attributes.categoria?.data?.attributes || null,
       imagem_destaque: item.attributes.imagem_destaque?.data?.attributes || null,
     }));
