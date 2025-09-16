@@ -4,37 +4,32 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: [ './src/**/*.{js,ts,jsx,tsx,mdx}' ],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
-      colors: {
-        // COLE SUAS CORES ESCOLHIDAS AQUI
-        'primary': '#005f73',      // Cor principal para links, botões e destaques
-        'primary-dark': '#003e4d', // Uma variação mais escura para efeitos de hover
-        'background': '#f4f4f5',    // Cor de fundo geral do site (use um cinza bem claro ou off-white)
-        'surface': '#ffffff',     // Cor de fundo dos cards e elementos "elevados"
-        'text-title': '#18181b',  // Cor para títulos (use um cinza bem escuro)
-        'text-body': '#52525b',   // Cor para parágrafos e textos comuns
-        'border': '#e4e4e7',      // Cor para bordas sutis
-      },
       fontFamily: {
-        // As fontes serão definidas no próximo arquivo
-        heading: ['var(--font-heading)'],
-        body: ['var(--font-body)'],
+        heading: ['var(--font-montserrat)', ...fontFamily.sans],
+        body: ['var(--font-open-sans)', ...fontFamily.sans],
       },
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {
-            '--tw-prose-body': theme('colors.dark.text-body'),
-            '--tw-prose-headings': theme('colors.dark.text-title'),
-            '--tw-prose-links': theme('colors.brand.amber'),
-            '--tw-prose-bold': theme('colors.dark.text-title'),
-            '--tw-prose-hr': theme('colors.dark.border'),
-            '--tw-prose-quotes': theme('colors.dark.text-title'),
-            '--tw-prose-quote-borders': theme('colors.brand.amber'),
-          },
+      colors: {
+        // Paleta de cores principal e consistente
+        'primary': {
+          DEFAULT: '#2563eb', // Azul para destaques e links
+          'dark': '#1d4ed8',
         },
-      }),
+        'neutral': {
+          '50': '#f9fafb',   // Fundo principal (cinza muito claro)
+          '100': '#f3f4f6',  // Fundo de cards de sidebar
+          '200': '#e5e7eb',  // Bordas
+          '500': '#6b7280',  // Texto secundário
+          '700': '#374151',  // Texto principal
+          '900': '#111827',  // Títulos
+        },
+      },
     },
   },
   plugins: [
