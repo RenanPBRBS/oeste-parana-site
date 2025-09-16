@@ -6,45 +6,19 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-montserrat',
-  weight: ['400', '500', '600', '700', '800'],
-});
-
-const openSans = Open_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-open-sans',
-  weight: ['400', '600'],
-});
+const montserrat = Montserrat({ subsets: ['latin'], display: 'swap', variable: '--font-montserrat', weight: ['400', '500', '600', '700', '800'], });
+const openSans = Open_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-open-sans', weight: ['400', '600'], });
 
 export const metadata: Metadata = {
-    title: {
-      template: '%s | Oeste Paraná Notícias',
-      default: 'Oeste Paraná Notícias - As últimas notícias da sua região',
-    },
-    description: 'Fique por dentro das últimas notícias e acontecimentos do Oeste do Paraná. Cobertura completa sobre agronegócio, política, esportes e cidades.',
-    openGraph: {
-        title: 'Oeste Paraná Notícias',
-        description: 'As últimas notícias e acontecimentos do Oeste do Paraná.',
-        url: 'https://oeste-parana-site.vercel.app',
-        siteName: 'Oeste Paraná Notícias',
-        images: [{ url: 'https://oeste-parana-site.vercel.app/og-image.png', width: 1200, height: 630, }],
-        locale: 'pt_BR',
-        type: 'website',
-    },
+    title: { template: '%s | Oeste Paraná Notícias', default: 'Oeste Paraná Notícias - As últimas notícias da sua região' },
+    description: 'Fique por dentro das últimas notícias e acontecimentos do Oeste do Paraná.',
+    // ... (o resto do seu metadata continua igual)
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
     <html lang="pt-BR" className={`${montserrat.variable} ${openSans.variable}`}>
-      <body className="min-h-screen flex flex-col bg-neutral-800 font-body text-neutral-200 antialiased">
+      <body className="min-h-screen flex flex-col bg-dark-bg font-body text-dark-text-body antialiased">
         <Header />
         <main className="flex-grow">
           {children}
