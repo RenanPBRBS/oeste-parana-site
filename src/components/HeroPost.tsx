@@ -1,6 +1,6 @@
 // ./components/HeroPost.tsx
 import Image from 'next/image';
-import Link from 'next/link'; // Garantindo que o Link está importado
+import Link from 'next/link';
 
 type Categoria = {
   nome: string;
@@ -18,7 +18,6 @@ type HeroPostProps = {
 export default function HeroPost({ imagemUrl, categoria, titulo, resumo, slug }: HeroPostProps) {
   return (
     <div className="relative bg-white border border-neutral-100 rounded-lg overflow-hidden shadow-lg group">
-      {/* CORRIGIDO AQUI */}
       <Link href={`/noticia/${slug}`} className="block">
         <div className="relative aspect-video">
           <Image
@@ -33,13 +32,12 @@ export default function HeroPost({ imagemUrl, categoria, titulo, resumo, slug }:
       </Link>
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white font-body">
         {categoria && (
-          // CORRIGIDO AQUI
-          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3">
+          // ESTE É O ESTILO CORRETO E DESTACADO
+          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3 inline-block">
             {categoria.nome}
           </Link>
         )}
         <h2 className="font-heading text-3xl md:text-4xl font-extrabold leading-tight">
-          {/* CORRIGIDO AQUI */}
           <Link href={`/noticia/${slug}`} className="hover:text-neutral-200 transition-colors">
             {titulo}
           </Link>
