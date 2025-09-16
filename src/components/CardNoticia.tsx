@@ -19,7 +19,7 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
   return (
     <div className="flex flex-col bg-white border border-neutral-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 h-full">
       <Link href={`/noticia/${slug}`} className="block group">
-        <div className="relative aspect-video overflow-hidden"> {/* Usamos aspect-video para proporção consistente */}
+        <div className="relative aspect-video overflow-hidden">
           <Image
             src={imagemUrl}
             alt={titulo}
@@ -31,7 +31,11 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
       </Link>
       <div className="p-5 flex flex-col flex-grow font-body">
         {categoria && (
-          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300">
+          // AQUI ESTÁ A MUDANÇA DE ESTILO PRINCIPAL
+          <Link 
+            href={`/categoria/${categoria.slug}`} 
+            className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3"
+          >
             {categoria.nome}
           </Link>
         )}
@@ -40,7 +44,7 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
             {titulo}
           </Link>
         </h3>
-        <p className="text-neutral-700 text-sm mt-3 leading-relaxed">
+        <p className="text-neutral-700 text-sm mt-2 leading-relaxed">
           {resumo}
         </p>
       </div>
