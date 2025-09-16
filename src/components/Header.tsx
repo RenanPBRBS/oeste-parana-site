@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // ./components/Header.tsx
 import Link from 'next/link';
 import HeaderNavigation from './HeaderNavigation';
@@ -13,7 +12,10 @@ async function fetchCategorias(): Promise<Categoria[]> {
     const res = await fetch(endpoint, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     const responseJson = await res.json();
-    return responseJson.data.map((item: any) => ({ ...item.attributes, id: item.id }));
+    
+    // CORREÇÃO AQUI: Apenas retornamos os dados "planos", sem tentar acessar "attributes"
+    return responseJson.data || [];
+
   } catch (error) {
     console.error("Erro ao buscar categorias:", error);
     return [];
@@ -34,12 +36,11 @@ export default async function Header() {
           <div className="hidden md:block">
             <SearchBar />
           </div>
-          {/* O componente a seguir controla o menu mobile e o botão */}
           <HeaderNavigation categorias={categorias} />
         </div>
       </div>
       
-      {/* Barra de Categorias (Aparece apenas no Desktop) */}
+      {/* Barra de Categorias (Desktop) */}
       <nav className="hidden md:block bg-primary">
         <div className="container mx-auto px-4">
           <ul className="flex items-center space-x-8">
