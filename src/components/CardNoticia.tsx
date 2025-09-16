@@ -2,32 +2,44 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Categoria = { nome: string; slug: string; }
+type Categoria = { nome: string; slug: string; };
 type CardNoticiaProps = { imagemUrl: string; categoria: Categoria | null; titulo: string; resumo: string; slug: string; };
 
 export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug }: CardNoticiaProps) {
   return (
-    <div className="flex flex-col bg-dark-surface border border-dark-border rounded-lg overflow-hidden group transition-all duration-300 hover:border-brand-amber/50 hover:shadow-2xl hover:shadow-brand-amber/5">
-      <Link href={`/noticia/${slug}`} className="block">
-        <div className="relative aspect-video overflow-hidden">
+    // O container do card. Mude a sombra, a borda, etc. aqui.
+    <div className="flex flex-col bg-surface border border-border rounded-md overflow-hidden h-full">
+      <Link href={`/noticia/${slug}`} className="block group">
+        <div className="relative aspect-video">
           <Image
-            src={imagemUrl} alt={titulo} fill sizes="(max-width: 768px) 100vw, 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
+            src={imagemUrl} alt={titulo} fill sizes="100vw"
+            // Efeito de zoom na imagem ao passar o mouse
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       </Link>
+      
+      {/* Área de texto do card */}
       <div className="p-5 flex flex-col flex-grow">
         {categoria && (
-          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase text-brand-amber hover:text-brand-amber-dark transition-colors mb-3 self-start">
+          <Link 
+            href={`/categoria/${categoria.slug}`} 
+            // Estilo da tag de categoria. Use text-primary, bg-primary, etc.
+            className="font-heading text-xs font-semibold text-primary mb-2 self-start hover:underline"
+          >
             {categoria.nome}
           </Link>
         )}
-        <h3 className="font-heading text-xl font-semibold leading-tight text-dark-text-title flex-grow">
-          <Link href={`/noticia/${slug}`} className="group-hover:text-brand-amber transition-colors duration-300">
+        
+        {/* Título da notícia */}
+        <h3 className="font-heading text-lg font-bold text-text-title flex-grow">
+          <Link href={`/noticia/${slug}`} className="hover:text-primary transition-colors">
             {titulo}
           </Link>
         </h3>
-        <p className="font-body text-dark-text-muted text-sm mt-2 leading-relaxed">
+        
+        {/* Resumo da notícia */}
+        <p className="font-body text-text-body text-sm mt-2">
           {resumo}
         </p>
       </div>

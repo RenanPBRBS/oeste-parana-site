@@ -4,30 +4,23 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: [ './src/**/*.{js,ts,jsx,tsx,mdx}' ],
   theme: {
     extend: {
-      fontFamily: {
-        heading: ['var(--font-montserrat)', ...fontFamily.sans],
-        body: ['var(--font-open-sans)', ...fontFamily.sans],
-      },
       colors: {
-        'brand': {
-          'amber': '#f59e0b', // Nosso "sol" - a cor de destaque principal
-          'amber-dark': '#d97706',
-        },
-        'dark': {
-          'bg': '#0d1117',      // O fundo principal, um azul-chumbo profundo
-          'surface': '#161b22', // O fundo dos cards, um pouco mais claro
-          'border': '#30363d', // Bordas sutis
-          'text-title': '#f0f6fc',   // Texto dos títulos (branco suave)
-          'text-body': '#c9d1d9',    // Texto principal (cinza claro)
-          'text-muted': '#8b949e',   // Texto de apoio (cinza mais escuro)
-        },
+        // COLE SUAS CORES ESCOLHIDAS AQUI
+        'primary': '#005f73',      // Cor principal para links, botões e destaques
+        'primary-dark': '#003e4d', // Uma variação mais escura para efeitos de hover
+        'background': '#f4f4f5',    // Cor de fundo geral do site (use um cinza bem claro ou off-white)
+        'surface': '#ffffff',     // Cor de fundo dos cards e elementos "elevados"
+        'text-title': '#18181b',  // Cor para títulos (use um cinza bem escuro)
+        'text-body': '#52525b',   // Cor para parágrafos e textos comuns
+        'border': '#e4e4e7',      // Cor para bordas sutis
+      },
+      fontFamily: {
+        // As fontes serão definidas no próximo arquivo
+        heading: ['var(--font-heading)'],
+        body: ['var(--font-body)'],
       },
       typography: (theme) => ({
         DEFAULT: {
