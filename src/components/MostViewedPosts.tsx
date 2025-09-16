@@ -1,18 +1,24 @@
 // ./components/MostViewedPosts.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 
+// Tipos para os dados que vamos usar
+type ImagemNoticia = { url: string; };
+type Categoria = { nome: string; };
 type NoticiaMaisVista = {
   id: number;
   titulo: string;
-  slug: string;
+  slug: string | null;
   visualizacoes: number;
+  categoria: Categoria | null;
+  imagem_destaque: ImagemNoticia | null;
 }
 
-// Função para buscar as notícias mais vistas
+// Função para buscar as notícias mais vistas, agora com mais dados
 async function fetchMostViewed(): Promise<NoticiaMaisVista[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-  // Buscamos as 5 notícias com mais visualizações em ordem decrescente
-  const endpoint = `${apiUrl}/api/noticias?sort=visualizacoes:desc&pagination[limit]=5`;
+  // Usamos populate=* para trazer também a imagem e a categoria
+  const endpoint = `${apiUrl}/api/noticias?sort=visualizacoes:desc&pagination[limit]=5&populate=*`;
 
   try {
     const res = await fetch(endpoint, { next: { revalidate: 600 } }); // Cache de 10 minutos
@@ -31,22 +37,47 @@ export default async function MostViewedPosts() {
   if (noticias.length === 0) {
     return null;
   }
+  
+  const placeholderImage = 'https://placehold.co/150x150/e2e8f0/64748b?text=Img';
 
   return (
-    <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
       <h3 className="text-xl font-bold mb-4 border-b-2 border-gray-200 pb-2">
         🔥 Mais Vistos
       </h3>
-      <ol className="space-y-3 list-decimal list-inside">
+      <ul className="space-y-4">
         {noticias.map((noticia) => (
-          <li key={noticia.id}>
-            <Link href={`/noticia/${noticia.slug}`} className="text-gray-700 hover:text-blue-800 transition-colors">
-              {noticia.titulo}
+          <li key={noticia.id} className="flex items-start gap-4">
+            <Link href={`/noticia/${noticia.slug ?? '#'}`} className="flex-shrink-0">
+              <div className="relative w-20 h-16 rounded-md overflow-hidden">
+                <Image
+                  src={
+                    noticia.imagem_destaque
+                      ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${noticia.imagem_destaque.url}`
+                      : placeholderImage
+                  }
+                  alt={noticia.titulo}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  sizes="80px"
+                />
+              </div>
             </Link>
-            <span className="text-sm text-gray-500 ml-2">({noticia.visualizacoes} views)</span>
+            <div>
+              {noticia.categoria && (
+                 <span className="text-xs font-semibold text-blue-600">
+                  {noticia.categoria.nome}
+                </span>
+              )}
+              <h4 className="font-semibold leading-tight text-gray-800 hover:text-blue-700 transition-colors">
+                <Link href={`/noticia/${noticia.slug ?? '#'}`}>
+                  {noticia.titulo}
+                </Link>
+              </h4>
+            </div>
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
   );
 }
