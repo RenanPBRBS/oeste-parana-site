@@ -34,7 +34,7 @@ export default function HeroPost({ imagemUrl, categoria, titulo, resumo, slug }:
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white font-body">
         {categoria && (
           // CORRIGIDO AQUI
-          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-sm font-bold uppercase bg-primary px-3 py-1 rounded-full inline-block mb-3 hover:bg-primary-dark transition-colors">
+          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3">
             {categoria.nome}
           </Link>
         )}

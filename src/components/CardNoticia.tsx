@@ -31,7 +31,7 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
       </Link>
       <div className="p-5 flex flex-col flex-grow font-body">
         {categoria && (
-          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-semibold uppercase text-primary hover:text-primary-dark transition-colors mb-2 self-start">
+          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300">
             {categoria.nome}
           </Link>
         )}

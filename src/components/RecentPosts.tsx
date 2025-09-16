@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Tipos para os dados que vamos usar
 type ImagemNoticia = { url: string; };
-type Categoria = { nome: string; };
+type Categoria = { nome: string; slug: string; };
 type NoticiaRecente = {
   id: number;
   titulo: string;
@@ -12,6 +13,7 @@ type NoticiaRecente = {
   imagem_destaque: ImagemNoticia | null;
 }
 
+// Função para buscar as notícias mais recentes, com todos os dados
 async function fetchRecentNoticias(currentPostSlug: string): Promise<NoticiaRecente[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/noticias?sort=publishedAt:desc&pagination[limit]=5&filters[slug][$ne]=${currentPostSlug}&populate=*`;
@@ -58,11 +60,11 @@ export default async function RecentPosts({ currentPostSlug }: { currentPostSlug
             </Link>
             <div>
               {noticia.categoria && (
-                 <span className="text-xs font-heading font-semibold uppercase text-primary">
+                 <Link href={`/categoria/${noticia.categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary/10 text-primary px-2 py-0.5 rounded-md self-start hover:bg-primary/20 transition-colors duration-300">
                   {noticia.categoria.nome}
-                </span>
+                </Link>
               )}
-              <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors">
+              <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors mt-1">
                 <Link href={`/noticia/${noticia.slug ?? '#'}`}>
                   {noticia.titulo}
                 </Link>

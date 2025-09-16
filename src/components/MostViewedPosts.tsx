@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Tipos para os dados que vamos usar
 type ImagemNoticia = { url: string; };
-type Categoria = { nome: string; };
+type Categoria = { nome: string; slug: string; };
 type NoticiaMaisVista = {
   id: number;
   titulo: string;
@@ -13,12 +14,13 @@ type NoticiaMaisVista = {
   imagem_destaque: ImagemNoticia | null;
 }
 
+// Função para buscar as notícias mais vistas, com todos os dados
 async function fetchMostViewed(): Promise<NoticiaMaisVista[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/noticias?sort=visualizacoes:desc&pagination[limit]=5&populate=*`;
 
   try {
-    const res = await fetch(endpoint, { next: { revalidate: 600 } });
+    const res = await fetch(endpoint, { next: { revalidate: 600 } }); // Cache de 10 minutos
     if (!res.ok) return [];
     const responseJson = await res.json();
     return responseJson.data || [];
@@ -59,11 +61,11 @@ export default async function MostViewedPosts() {
             </Link>
             <div>
               {noticia.categoria && (
-                 <span className="text-xs font-heading font-semibold uppercase text-primary">
+                 <Link href={`/categoria/${noticia.categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary/10 text-primary px-2 py-0.5 rounded-md self-start hover:bg-primary/20 transition-colors duration-300">
                   {noticia.categoria.nome}
-                </span>
+                </Link>
               )}
-              <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors">
+              <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors mt-1">
                 <Link href={`/noticia/${noticia.slug ?? '#'}`}>
                   {noticia.titulo}
                 </Link>
