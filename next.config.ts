@@ -7,15 +7,22 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'placehold.co',
-        // Não precisa de port e pathname se não especificado
       },
-      // ADICIONAMOS ESTE NOVO BLOCO
+      // Padrão que já tínhamos para o desenvolvimento LOCAL
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '1337',
-        pathname: '/uploads/**', // Imagens do Strapi ficam nesta pasta
+        pathname: '/uploads/**',
       },
+      // ===== ADICIONE ESTE NOVO BLOCO PARA O SITE NO AR =====
+      {
+        protocol: 'https',
+        hostname: 'oeste-parana-cms.onrender.com', // O endereço do seu Strapi na Render
+        port: '', // A porta padrão (443 para https) fica em branco
+        pathname: '/uploads/**', // Permite todas as imagens da pasta de uploads
+      },
+      // =======================================================
     ],
   },
 };
