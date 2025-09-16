@@ -1,26 +1,31 @@
 // ./app/layout.tsx
 import type { Metadata } from 'next';
-import { Montserrat, Open_Sans } from 'next/font/google';
+import { Roboto } from 'next/font/google'; // Nova fonte
 import './globals.css';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-const montserrat = Montserrat({ subsets: ['latin'], display: 'swap', variable: '--font-montserrat', weight: ['500', '600', '700', '800'], });
-const openSans = Open_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-open-sans', weight: ['400', '600'], });
+// Configuração da fonte Roboto
+const roboto = Roboto({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-roboto',
+  weight: ['400', '500', '700', '900'],
+});
 
 export const metadata: Metadata = {
     title: {
-      template: '%s | Oeste Paraná Notícias',
-      default: 'Oeste Paraná Notícias - As últimas notícias da sua região',
+      template: '%s | Oeste Paraná - G1', // Atualizamos o template
+      default: 'Oeste Paraná - G1',
     },
-    description: 'Fique por dentro das últimas notícias e acontecimentos do Oeste do Paraná.',
+    description: 'As últimas notícias do Oeste do Paraná.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
-    <html lang="pt-BR" className={`${montserrat.variable} ${openSans.variable}`}>
-      <body className="min-h-screen flex flex-col bg-neutral-50 font-body text-neutral-700 antialiased">
+    <html lang="pt-BR" className={roboto.variable}>
+      <body className="min-h-screen flex flex-col bg-neutral-100 font-sans text-neutral-800 antialiased">
         <Header />
         <main className="flex-grow">
           {children}

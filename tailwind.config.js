@@ -12,22 +12,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['var(--font-montserrat)', ...fontFamily.sans],
-        body: ['var(--font-open-sans)', ...fontFamily.sans],
+        // Usaremos Roboto para tudo, variando o peso, como no G1
+        sans: ['var(--font-roboto)', ...fontFamily.sans],
       },
       colors: {
-        // Paleta de cores principal e consistente
-        'primary': {
-          DEFAULT: '#2563eb', // Azul para destaques e links
-          'dark': '#1d4ed8',
+        'g1': {
+          'red': '#C4170C', // O vermelho icônico do G1
+          'blue': '#00589F', // Azul para links de texto
         },
         'neutral': {
-          '50': '#f9fafb',   // Fundo principal (cinza muito claro)
-          '100': '#f3f4f6',  // Fundo de cards de sidebar
-          '200': '#e5e7eb',  // Bordas
-          '500': '#6b7280',  // Texto secundário
-          '700': '#374151',  // Texto principal
-          '900': '#111827',  // Títulos
+          '50': '#FFFFFF',   // Branco
+          '100': '#F0F0F0',  // Fundo principal (cinza muito claro)
+          '200': '#E6E6E6',  // Bordas
+          '600': '#666666',  // Texto secundário/de apoio
+          '800': '#333333',  // Texto principal
+          '900': '#000000',  // Títulos fortes
         },
       },
     },
