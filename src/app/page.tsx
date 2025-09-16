@@ -57,9 +57,10 @@ export default async function Homepage() {
   const placeholderImage = 'https://placehold.co/600x400/e2e8f0/64748b?text=Sem+Imagem';
 
   return (
-    <div className="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 font-body">
+    <div className="container mx-auto px-4 py-8 font-body">
+      <BannerPublicitario local="topo-home" />
       {/* Coluna principal com a notícia em destaque */}
-      <div className="md:col-span-2 space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         {principalNoticia && (
           <HeroPost
             titulo={principalNoticia.titulo}

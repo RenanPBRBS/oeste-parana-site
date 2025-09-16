@@ -12,20 +12,20 @@ export default function SearchBar() {
     e.preventDefault();
     if (query.trim()) {
       router.push(`/busca?q=${encodeURIComponent(query.trim())}`);
-      setQuery(''); // Limpa o campo após a busca
+      setQuery('');
     }
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex items-center space-x-2 w-full md:w-auto">
+    <form onSubmit={handleSearch} className="relative w-full md:w-64">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Buscar notícias..."
-        className="flex-grow p-2 border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light font-body text-neutral-700 text-sm"
+        placeholder="Buscar..."
+        className="w-full pl-4 pr-10 py-2 border border-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-light font-body text-neutral-700 text-sm transition-shadow duration-300 shadow-sm focus:shadow-md"
       />
-      <button type="submit" aria-label="Buscar" className="p-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary-light">
+      <button type="submit" aria-label="Buscar" className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-400 hover:text-primary transition-colors">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>

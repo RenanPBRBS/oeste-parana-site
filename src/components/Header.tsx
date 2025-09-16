@@ -1,18 +1,12 @@
+// ./components/Header.tsx
 import Link from 'next/link';
 import HeaderNavigation from './HeaderNavigation';
 import SearchBar from './SearchBar';
-
-
-type Categoria = {
-  id: number;
-  nome: string;
-  slug: string;
-}
+type Categoria = { id: number; nome: string; slug: string; };
 
 async function fetchCategorias(): Promise<Categoria[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/categorias`;
-
   try {
     const res = await fetch(endpoint, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
@@ -27,24 +21,32 @@ async function fetchCategorias(): Promise<Categoria[]> {
 export default async function Header() {
   const categorias = await fetchCategorias();
   return (
-    <header className="bg-white shadow-md p-4 sticky top-0 z-30 border-b border-neutral-100 font-heading">
-      <div className="container mx-auto flex justify-between items-center py-2">
-        <Link href="/" className="text-3xl font-extrabold text-neutral-900 hover:text-primary transition-colors">
-          Oeste Paraná
-        </Link>
-        <div className="hidden md:block">
-          <SearchBar /> {/* SearchBar aqui no desktop */}
+    <header className="bg-white shadow-sm sticky top-0 z-30 border-b border-neutral-100 font-heading">
+      {/* Barra Principal */}
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <Link href="/" className="text-3xl font-extrabold text-neutral-900 hover:text-primary transition-colors">
+            Oeste Paraná
+          </Link>
+          <div className="hidden md:block">
+            <SearchBar />
+          </div>
+          <HeaderNavigation categorias={categorias} />
         </div>
-        <HeaderNavigation categorias={categorias} />
       </div>
-      {/* Barra de categorias abaixo do header principal no desktop */}
-      <nav className="hidden md:block bg-primary py-3">
-        <div className="container mx-auto flex space-x-6">
-          {categorias.map((categoria) => (
-            <Link key={categoria.id} href={`/categoria/${categoria.slug}`} className="text-white text-sm font-semibold uppercase hover:text-neutral-200 transition-colors">
-              {categoria.nome}
-            </Link>
-          ))}
+      
+      {/* Barra de Categorias (Desktop) */}
+      <nav className="hidden md:block bg-primary">
+        <div className="container mx-auto px-4">
+          <ul className="flex space-x-8">
+            {categorias.map((categoria) => (
+              <li key={categoria.id}>
+                <Link href={`/categoria/${categoria.slug}`} className="text-white text-sm font-semibold uppercase py-3 block relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
+                  {categoria.nome}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </nav>
     </header>
