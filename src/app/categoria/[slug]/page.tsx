@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // ./app/categoria/[slug]/page.tsx
 import CardNoticia from "@/components/CardNoticia";
 import { notFound } from "next/navigation";
