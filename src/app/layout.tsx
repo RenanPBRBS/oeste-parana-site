@@ -44,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${montserrat.variable} ${openSans.variable}`}>
-      <body className="min-h-screen flex flex-col bg-neutral-50 font-body text-neutral-700 antialiased">
+      <body className="min-h-screen flex flex-col bg-neutral-800 font-body text-neutral-200 antialiased">
         <Header />
         <main className="flex-grow">
           {children}

@@ -26,8 +26,8 @@ export default async function MostViewedPosts() {
   const placeholderImage = 'https://placehold.co/150x150/e2e8f0/64748b?text=Img';
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-100 font-body">
-      <h3 className="font-heading text-xl font-bold mb-4 pb-2 border-b-2 border-neutral-200 text-neutral-900">
+    <div className="bg-neutral-700 p-6 rounded-lg shadow-sm border border-neutral-700/50 font-body">
+      <h3 className="font-heading text-xl font-bold mb-4 pb-2 border-b-2 border-neutral-700 text-neutral-100">
         🔥 Mais Vistos
       </h3>
       <ul className="space-y-5">
@@ -40,18 +40,12 @@ export default async function MostViewedPosts() {
             </Link>
             <div>
               {noticia.categoria && (
-                // ESTILO ATUALIZADO AQUI (Pílula cinza claro com texto primário)
-                <Link 
-                  href={`/categoria/${noticia.categoria.slug}`} 
-                  className="font-heading text-[10px] font-bold uppercase bg-neutral-100 text-primary-dark px-2 py-1 rounded-md self-start hover:bg-neutral-200 hover:text-primary transition-colors duration-300 inline-block"
-                >
+                 <Link href={`/categoria/${noticia.categoria.slug}`} className="font-heading text-[10px] font-bold uppercase bg-primary text-white px-2.5 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300">
                   {noticia.categoria.nome}
                 </Link>
               )}
-              <h4 className="font-heading text-base font-medium leading-tight text-neutral-800 group-hover:text-primary transition-colors mt-2">
-                <Link href={`/noticia/${noticia.slug ?? '#'}`}>
-                  {noticia.titulo}
-                </Link>
+              <h4 className="font-heading text-base font-medium leading-tight text-neutral-200 group-hover:text-primary transition-colors mt-2">
+                <Link href={`/noticia/${noticia.slug ?? '#'}`}>{noticia.titulo}</Link>
               </h4>
             </div>
           </li>
