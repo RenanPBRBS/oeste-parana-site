@@ -5,35 +5,12 @@ import MostViewedPosts from "@/components/MostViewedPosts";
 import RecentPosts from "@/components/RecentPosts";
 import HeroPost from "@/components/HeroPost";
 
-// --- DEFINIÇÕES DE TIPO CORRIGIDAS ---
-// Estes são os tipos "planos" que usamos nos nossos componentes
+// Tipos "planos", que correspondem à sua API
 type ImagemNoticia = { url: string; };
 type Categoria = { nome: string; slug: string; };
-type Noticia = { 
-  id: number; 
-  titulo: string; 
-  resumo: string; 
-  imagem_destaque: ImagemNoticia | null; 
-  slug: string | null; 
-  categoria: Categoria | null; 
-  publishedAt: string;
-};
+type Noticia = { id: number; titulo: string; resumo: string; imagem_destaque: ImagemNoticia | null; slug: string | null; categoria: Categoria | null; };
 
-// Estes tipos representam a estrutura ANINHADA real que vem da API
-type StrapiCategoria = { data: { attributes: Categoria } | null };
-type StrapiImagem = { data: { attributes: ImagemNoticia } | null };
-type StrapiItemAttributes = { 
-  titulo: string; 
-  resumo: string; 
-  slug: string | null; 
-  categoria: StrapiCategoria; 
-  imagem_destaque: StrapiImagem; 
-  publishedAt: string;
-};
-type StrapiItem = { id: number; attributes: StrapiItemAttributes };
-// --- FIM DAS DEFINIÇÕES DE TIPO ---
-
-
+// Função de busca SIMPLIFICADA
 async function fetchNoticias(): Promise<Noticia[]> {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const endpoint = `${apiUrl}/api/noticias?sort=publishedAt:desc&populate=*`;
@@ -41,17 +18,8 @@ async function fetchNoticias(): Promise<Noticia[]> {
     const res = await fetch(endpoint, { next: { revalidate: 600 } });
     if (!res.ok) return [];
     const responseJson = await res.json();
-    
-    // Esta lógica de transformação agora está correta porque os tipos acima são precisos
-    return responseJson.data.map((item: StrapiItem) => ({
-      id: item.id,
-      titulo: item.attributes.titulo,
-      resumo: item.attributes.resumo,
-      slug: item.attributes.slug,
-      publishedAt: item.attributes.publishedAt,
-      categoria: item.attributes.categoria?.data?.attributes || null,
-      imagem_destaque: item.attributes.imagem_destaque?.data?.attributes || null,
-    }));
+    // Apenas retornamos os dados, sem nenhuma transformação
+    return responseJson.data || [];
   } catch (error) {
     console.error("Erro ao buscar notícias:", error);
     return [];
@@ -60,13 +28,8 @@ async function fetchNoticias(): Promise<Noticia[]> {
 
 export default async function Homepage() {
   const noticias = await fetchNoticias();
-
   if (!noticias || noticias.length === 0) {
-    return (
-      <div className="container mx-auto p-8 text-center">
-        <h2 className="text-2xl font-bold font-heading">Nenhuma notícia encontrada.</h2>
-      </div>
-    );
+    return ( <div className="container mx-auto p-8 text-center"><h2 className="text-2xl font-bold font-heading">Nenhuma notícia encontrada.</h2></div> );
   }
 
   const principalNoticia = noticias[0];
@@ -76,21 +39,13 @@ export default async function Homepage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <BannerPublicitario local="topo-home" />
-
       <div className="flex flex-col lg:flex-row gap-12 mt-8">
         <main className="w-full lg:w-[70%] space-y-12">
           <HeroPost
-            titulo={principalNoticia.titulo}
-            categoria={principalNoticia.categoria}
-            resumo={principalNoticia.resumo}
-            imagemUrl={
-              principalNoticia.imagem_destaque
-                ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${principalNoticia.imagem_destaque.url}`
-                : placeholderImage
-            }
+            titulo={principalNoticia.titulo} categoria={principalNoticia.categoria} resumo={principalNoticia.resumo}
+            imagemUrl={ principalNoticia.imagem_destaque ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${principalNoticia.imagem_destaque.url}` : placeholderImage }
             slug={principalNoticia.slug ?? '#'}
           />
-
           <section>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 mb-6 pb-2 border-b-2 border-primary">
               Últimas Notícias
@@ -98,22 +53,14 @@ export default async function Homepage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {outrasNoticias.map((noticia) => (
                 <CardNoticia
-                  key={noticia.id}
-                  titulo={noticia.titulo}
-                  categoria={noticia.categoria}
-                  resumo={noticia.resumo}
-                  imagemUrl={
-                    noticia.imagem_destaque
-                      ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${noticia.imagem_destaque.url}`
-                      : placeholderImage
-                  }
+                  key={noticia.id} titulo={noticia.titulo} categoria={noticia.categoria} resumo={noticia.resumo}
+                  imagemUrl={ noticia.imagem_destaque ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${noticia.imagem_destaque.url}` : placeholderImage }
                   slug={noticia.slug ?? '#'}
                 />
               ))}
             </div>
           </section>
         </main>
-
         <aside className="w-full lg:w-[30%]">
           <div className="sticky top-28 space-y-8">
             <MostViewedPosts />
