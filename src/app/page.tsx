@@ -3,6 +3,7 @@ import CardNoticia from "@/components/CardNoticia";
 import BannerPublicitario from "@/components/BannerPublicitario";
 import MostViewedPosts from '@/components/MostViewedPosts';
 import RecentPosts from '@/components/RecentPosts';
+import React from 'react';
 
 // Tipos corretos para a API "plana" com a Categoria como um objeto de relação
 type ImagemNoticia = {
@@ -33,13 +34,13 @@ async function fetchNoticias(): Promise<Noticia[]> {
     if (!res.ok) {
       console.error("API Response Error. Verifique as permissões no Strapi, especialmente para o UPLOAD.", res.status, res.statusText);
       throw new Error('Falha ao buscar notícias da API');
+
     }
     
     const responseJson = await res.json();
     
     // A sua API já retorna os dados "planos", então apenas retornamos o array 'data'
     return responseJson.data || [];
-
   } catch (error) {
     console.error("Erro em fetchNoticias:", error);
     return [];
@@ -94,10 +95,9 @@ export default async function Home() {
               Últimas Notícias
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {outrasNoticias.map((noticia) => (
-                // CORREÇÃO AQUI: Preenchendo todas as props
+            {outrasNoticias.map((noticia, index) => (
+              <React.Fragment key={noticia.id}>
                 <CardNoticia
-                  key={noticia.id}
                   titulo={noticia.titulo}
                   categoria={noticia.categoria}
                   resumo={noticia.resumo}
@@ -108,7 +108,14 @@ export default async function Home() {
                   }
                   slug={noticia.slug ?? '#'}
                 />
-              ))}
+                {/* Se este for o segundo item da lista (index 1), adiciona um anúncio depois dele */}
+                {index === 1 && (
+                  <div className="md:col-span-2"> {/* Ocupa a largura de 2 colunas no desktop */}
+                    <BannerPublicitario local="home-meio-lista" />
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
             </div>
           </section>
         </main>

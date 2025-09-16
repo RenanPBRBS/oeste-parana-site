@@ -97,7 +97,20 @@ export default async function PaginaNoticia({ params }: { params: { slug: string
               <Image src={imageUrl} alt={noticia.titulo} fill style={{ objectFit: 'cover' }} priority />
             </div>
             <div className="prose lg:prose-xl max-w-none">
-              <ReactMarkdown>{noticia.conteudo}</ReactMarkdown>
+              {noticia.conteudo.includes('[AD-HERE]') ? (
+                (() => {
+                  const parts = noticia.conteudo.split('[AD-HERE]');
+                  return (
+                    <>
+                      <ReactMarkdown>{parts[0]}</ReactMarkdown>
+                      <BannerPublicitario local="artigo-meio-conteudo" />
+                      <ReactMarkdown>{parts[1]}</ReactMarkdown>
+                    </>
+                  );
+                })()
+              ) : (
+                <ReactMarkdown>{noticia.conteudo}</ReactMarkdown>
+              )}
             </div>
           </article>
         </main>
