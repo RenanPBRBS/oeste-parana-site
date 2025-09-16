@@ -29,13 +29,9 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
           />
         </div>
       </Link>
-      <div className="p-5 flex flex-col flex-grow font-body">
+      <div className="p-5 flex flex-col flex-grow">
         {categoria && (
-          // AQUI ESTÁ A MUDANÇA DE ESTILO PRINCIPAL
-          <Link
-            href={`/categoria/${categoria.slug}`}
-            className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3"
-          >
+          <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3">
             {categoria.nome}
           </Link>
         )}
@@ -44,7 +40,7 @@ export default function CardNoticia({ imagemUrl, categoria, titulo, resumo, slug
             {titulo}
           </Link>
         </h3>
-        <p className="text-neutral-700 text-sm mt-2 leading-relaxed">
+        <p className="font-body text-neutral-700 text-sm mt-2 leading-relaxed">
           {resumo}
         </p>
       </div>

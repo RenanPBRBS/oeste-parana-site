@@ -30,9 +30,8 @@ export default function HeroPost({ imagemUrl, categoria, titulo, resumo, slug }:
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
         </div>
       </Link>
-      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white font-body">
+      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
         {categoria && (
-          // ESTE É O ESTILO CORRETO E DESTACADO
           <Link href={`/categoria/${categoria.slug}`} className="font-heading text-xs font-bold uppercase bg-primary text-white px-3 py-1 rounded-full self-start hover:bg-primary-dark transition-colors duration-300 mb-3 inline-block">
             {categoria.nome}
           </Link>
@@ -42,7 +41,7 @@ export default function HeroPost({ imagemUrl, categoria, titulo, resumo, slug }:
             {titulo}
           </Link>
         </h2>
-        <p className="hidden md:block text-neutral-100 mt-2 text-lg">
+        <p className="hidden md:block text-neutral-100 mt-2 text-lg font-body">
           {resumo}
         </p>
       </div>
